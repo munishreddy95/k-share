@@ -1,0 +1,14 @@
+{
+  "name": "flux-fileshare-relay",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Public relay for Flux File Share global web sharing.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node test-relay.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

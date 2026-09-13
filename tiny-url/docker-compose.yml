@@ -1,0 +1,35 @@
+services:
+  flux-tiny-url:
+    build:
+      context: .
+    image: flux-tiny-url:latest
+    container_name: flux-tiny-url
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - '127.0.0.1:4100:4100'
+    volumes:
+      - flux-tiny-url-data:/data
+    networks:
+      - flux-fileshare
+    healthcheck:
+      test:
+        [
+          'CMD',
+          'node',
+          '-e',
+          "const http=require('http');const req=http.get({host:'127.0.0.1',port:process.env.PORT||4100,path:'/healthz',timeout:3000},res=>process.exit(res.statusCode===200?0:1));req.on('error',()=>process.exit(1));req.on('timeout',()=>{req.destroy();process.exit(1);});",
+        ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+volumes:
+  flux-tiny-url-data:
+
+networks:
+  flux-fileshare:
+    name: flux-fileshare
+    driver: bridge

@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>K-Share</title>
+    <link rel="stylesheet" href="popup.css">
+  </head>
+  <body>
+    <main class="shell">
+      <header class="topbar">
+        <div class="brand-mark" aria-hidden="true">F</div>
+        <div class="brand-copy">
+          <p class="eyebrow">K-Share Live</p>
+          <h1>Browser share</h1>
+        </div>
+        <span id="connectionPill" class="connection-pill">Off</span>
+      </header>
+
+      <section class="dashboard">
+        <p id="statusText" class="status">Live Share is off.</p>
+        <div class="metrics" aria-label="Share summary">
+          <span><strong id="fileCounter">0</strong><small>Files</small></span>
+          <span><strong id="approvalCounter">0</strong><small>Requests</small></span>
+          <span><strong id="visitorCounter">0</strong><small>Visitors</small></span>
+        </div>
+      </section>
+
+      <nav class="tabs" aria-label="K-Share sections">
+        <button class="tab active" data-tab="files" type="button">
+          <span class="tab-icon" aria-hidden="true">+</span>
+          <span>Files</span>
+        </button>
+        <button class="tab" data-tab="link" type="button">
+          <span class="tab-icon" aria-hidden="true">&gt;</span>
+          <span>Link</span>
+        </button>
+        <button class="tab" data-tab="access" type="button">
+          <span class="tab-icon" aria-hidden="true">OK</span>
+          <span>Access</span>
+        </button>
+      </nav>
+
+      <section class="panel active" data-panel="files">
+        <div class="card-head">
+          <div>
+            <p class="eyebrow">Selected</p>
+            <h2>Choose what leaves this browser</h2>
+          </div>
+        </div>
+        <label class="file-picker">
+          <input id="fileInput" type="file" multiple>
+          <span class="file-picker-icon" aria-hidden="true">+</span>
+          <span>Choose files</span>
+        </label>
+        <div class="actions">
+          <button id="addCurrentTabButton" class="ghost" type="button">Add tab</button>
+          <button id="clearFilesButton" class="ghost" type="button">Clear</button>
+        </div>
+        <div id="fileList" class="list">
+          <p class="empty">No browser files selected yet.</p>
+        </div>
+      </section>
+
+      <section class="panel" data-panel="link">
+        <div class="card-head">
+          <div>
+            <p class="eyebrow">Live Link</p>
+            <h2>Share anywhere</h2>
+          </div>
+        </div>
+        <div class="actions hero-actions">
+          <button id="startButton" class="primary" type="button">Create live link</button>
+          <button id="stopButton" class="danger" type="button">Stop</button>
+        </div>
+        <div id="qrWrap" class="qr-wrap">
+          <p class="empty">Create a live link to show QR.</p>
+        </div>
+        <p id="shareUrl" class="payload"></p>
+        <button id="copyLinkButton" class="ghost full" type="button">Copy link</button>
+        <details class="advanced">
+          <summary>Advanced relay</summary>
+          <label class="field">
+            <span>Relay WebSocket URL</span>
+            <input id="relayUrlInput" spellcheck="false">
+          </label>
+        </details>
+      </section>
+
+      <section class="panel" data-panel="access">
+        <div class="card-head">
+          <div>
+            <p class="eyebrow">Approvals</p>
+            <h2>Approve who can enter</h2>
+          </div>
+        </div>
+        <div id="approvalList" class="list">
+          <p class="empty">No pending access requests.</p>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <div class="card-head compact">
+          <div>
+            <p class="eyebrow">Visitors</p>
+            <h2>Connected sessions</h2>
+          </div>
+        </div>
+        <div id="visitorList" class="list">
+          <p class="empty">No approved visitors yet.</p>
+        </div>
+      </section>
+    </main>
+    <script src="db.js"></script>
+    <script src="qr.js"></script>
+    <script src="popup.js"></script>
+  </body>
+</html>

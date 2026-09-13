@@ -1,0 +1,15 @@
+{
+  "name": "flux-fileshare-desktop",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Desktop companion receiver for Flux File Share nearby QR transfers.",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "electron .",
+    "start:web": "node src/main.js --browser",
+    "test": "node test/static-ui.test.js && node test/nearby-protocol.test.js && node test/http-ui.test.js"
+  },
+  "devDependencies": {
+    "electron": "^43.3.0"
+  }
+}

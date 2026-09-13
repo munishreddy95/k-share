@@ -1,0 +1,59 @@
+plugins {
+    id "com.android.application"
+}
+
+def keystorePropertiesFile = rootProject.file("keystore.properties")
+def keystoreProperties = new Properties()
+if (keystorePropertiesFile.exists()) {
+    keystorePropertiesFile.withInputStream { keystoreProperties.load(it) }
+}
+def fluxBuildString = { name, fallback = "" ->
+    def value = (project.findProperty(name) ?: fallback).toString()
+    return "\"" + value.replace("\\", "\\\\").replace("\"", "\\\"") + "\""
+}
+
+android {
+    namespace "com.fluxfileshare"
+    compileSdk 36
+
+    buildFeatures {
+        buildConfig true
+    }
+
+    defaultConfig {
+        applicationId "com.fluxfileshare"
+        minSdk 26
+        targetSdk 36
+        versionCode 1
+        versionName "1.0.0"
+        buildConfigField "String", "FLUX_RELAY_HOST", fluxBuildString("FLUX_RELAY_HOST")
+        buildConfigField "int", "FLUX_RELAY_PORT", (project.findProperty("FLUX_RELAY_PORT") ?: "0").toString()
+        buildConfigField "String", "FLUX_RELAY_PUBLIC_BASE", fluxBuildString("FLUX_RELAY_PUBLIC_BASE")
+        buildConfigField "boolean", "FLUX_RELAY_TLS", (project.findProperty("FLUX_RELAY_TLS") ?: "true").toString()
+        buildConfigField "String", "FLUX_RELAY_AGENT_PATH", fluxBuildString("FLUX_RELAY_AGENT_PATH", "/agent")
+    }
+
+    signingConfigs {
+        release {
+            if (keystorePropertiesFile.exists()) {
+                storeFile rootProject.file(keystoreProperties["storeFile"])
+                storePassword keystoreProperties["storePassword"]
+                keyAlias keystoreProperties["keyAlias"]
+                keyPassword keystoreProperties["keyPassword"]
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            signingConfig keystorePropertiesFile.exists() ? signingConfigs.release : null
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+        }
+    }
+}
+
+dependencies {
+    implementation "com.journeyapps:zxing-android-embedded:4.3.0"
+}

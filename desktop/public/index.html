@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Flux File Share Desktop</title>
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body>
+    <main class="shell">
+      <section class="hero">
+        <div>
+          <p class="eyebrow">Flux File Share Desktop</p>
+          <h1 id="heroTitle">Transfer workspace</h1>
+          <p class="subtle" id="heroSubtitle">Nearby, local browser sharing, and live internet sharing now live in one desktop app.</p>
+        </div>
+        <div class="status-pill" id="statusPill">Choose a mode</div>
+      </section>
+
+      <nav class="mode-tabs" aria-label="Desktop share mode">
+        <button class="mode-tab" data-mode="receive" type="button">
+          <span class="mode-icon">↓</span>
+          <span>
+            <strong>Receive</strong>
+            <small>Phone sends to desktop</small>
+          </span>
+        </button>
+        <button class="mode-tab" data-mode="send" type="button">
+          <span class="mode-icon">↑</span>
+          <span>
+            <strong>Send</strong>
+            <small>Desktop sends to phone</small>
+          </span>
+        </button>
+        <button class="mode-tab" data-mode="localShare" type="button">
+          <span class="mode-icon">⌁</span>
+          <span>
+            <strong>Local Web</strong>
+            <small>Same Wi-Fi browser link</small>
+          </span>
+        </button>
+        <button class="mode-tab" data-mode="liveShare" type="button">
+          <span class="mode-icon">◎</span>
+          <span>
+            <strong>Live Share</strong>
+            <small>Internet relay link</small>
+          </span>
+        </button>
+      </nav>
+
+      <section class="mode-switch-dialog hidden" id="modeSwitchDialog" role="dialog" aria-live="assertive" aria-labelledby="modeSwitchTitle">
+        <div>
+          <p class="eyebrow">Active Session</p>
+          <h2 id="modeSwitchTitle">Switch sharing mode?</h2>
+          <p id="modeSwitchCopy" class="dialog-copy">Switching modes will cancel the current nearby session before starting the new one.</p>
+        </div>
+        <div class="actions dialog-actions">
+          <button class="ghost" id="stayModeButton" type="button">Stay here</button>
+          <button class="danger" id="confirmModeSwitchButton" type="button">Switch mode</button>
+        </div>
+      </section>
+
+      <section class="grid mode-panel" data-panel="receive">
+        <article class="card qr-card">
+          <div class="card-head">
+            <div>
+              <p class="eyebrow">Receive Mode</p>
+              <h2>Phone scans desktop</h2>
+            </div>
+            <button class="ghost" id="refreshReceiveQrButton" type="button">Refresh</button>
+          </div>
+          <div class="qr-wrap" id="receiveQrWrap" aria-live="polite"></div>
+          <p class="payload" id="receivePayloadText"></p>
+          <div class="actions">
+            <button class="primary" id="startReceiveButton" type="button">Start receiver</button>
+            <button class="danger" id="stopReceiveButton" type="button">Stop receiver</button>
+          </div>
+        </article>
+
+        <article class="card setup-card flow-options" id="receiveOptionsCard">
+          <div class="card-head">
+            <div>
+              <p class="eyebrow">Network</p>
+              <h2>Same Wi-Fi</h2>
+            </div>
+          </div>
+          <label class="field">
+            <span>Connected device</span>
+            <input id="receivePeer" readonly>
+          </label>
+          <label class="field">
+            <span>Desktop IP</span>
+            <select id="hostSelect"></select>
+          </label>
+          <label class="field">
+            <span>Receive folder</span>
+            <input id="saveDir" readonly>
+          </label>
+          <button class="ghost full" id="openFolderButton" type="button">Open receive folder</button>
+          <button class="danger full connected-action hidden" id="cancelReceiveSessionButton" type="button">Cancel session</button>
+          <div class="hint">Files sent from mobile will appear in this folder.</div>
+        </article>
+      </section>
+
+      <section class="grid mode-panel" data-panel="send">
+        <article class="card qr-card">
+          <div class="card-head">
+            <div>
+              <p class="eyebrow">Send Mode</p>
+              <h2>Phone receives from desktop</h2>
+            </div>
+            <button class="ghost" id="refreshSendQrButton" type="button">Refresh</button>
+          </div>
+          <div class="qr-wrap" id="sendQrWrap" aria-live="polite"></div>
+          <p class="payload" id="sendPayloadText"></p>
+          <div class="actions">
+            <button class="primary alt" id="startSendButton" type="button">Show QR</button>
+            <button class="danger" id="stopSendButton" type="button">Cancel</button>
+          </div>
+        </article>
+
+        <article class="card setup-card flow-options" id="sendOptionsCard">
+          <div class="card-head">
+            <div>
+              <p class="eyebrow">Selected</p>
+              <h2>Desktop files</h2>
+            </div>
+            <span class="counter" id="selectedFileCounter">0</span>
+          </div>
+          <label class="field">
+            <span>Connected device</span>
+            <input id="sendPeer" readonly>
+          </label>
+          <div class="actions">
+            <button class="primary" id="chooseSendFilesButton" type="button">Choose files</button>
+            <button class="ghost" id="clearSendFilesButton" type="button">Clear files</button>
+          </div>
+          <button class="danger full connected-action hidden" id="cancelSendSessionButton" type="button">Cancel session</button>
+          <div class="selected-list" id="selectedFileList">
+            <p class="empty">Choose files, start sender, then let the phone scan this QR.</p>
+          </div>
+          <div class="hint">Desktop does not need a camera. The phone scans this QR.</div>
+        </article>
+      </section>
+
+      <section class="grid mode-panel web-panel" data-panel="localShare">
+        <article class="card setup-card">
+          <div class="card-head">
+            <div>
+              <p class="eyebrow">Local Web Share</p>
+              <h2>Same Wi-Fi browser access</h2>
+            </div>
+            <span class="counter" id="localSelectedFileCounter">0</span>
+          </div>
+          <label class="field">
+            <span>Desktop IP</span>
+            <select id="localHostSelect"></select>
+          </label>
+          <div class="actions three">
+            <button class="primary" id="chooseLocalFilesButton" type="button">Choose files</button>
+            <button class="ghost" id="clearLocalFilesButton" type="button">Clear</button>
+            <button class="primary alt" id="startLocalButton" type="button">Start</button>
+          </div>
+          <button class="danger full" id="stopLocalButton" type="button">Stop local share</button>
+          <div class="selected-list compact" id="localSelectedFileList">
+            <p class="empty">Choose files only for Local Web Share.</p>
+          </div>
+        </article>
+
+        <article class="card qr-card web-link-card">
+          <div class="card-head">
+            <div>
+              <p class="eyebrow">Local Link</p>
+              <h2>Open from same network</h2>
+            </div>
+            <button class="ghost" id="refreshLocalQrButton" type="button">Refresh</button>
+          </div>
+          <div class="qr-wrap small" id="localQrWrap" aria-live="polite"></div>
+          <p class="payload" id="localPayloadText"></p>
+          <div class="card-head visitor-head">
+            <div>
+              <p class="eyebrow">Visitors</p>
+              <h2>Local sessions</h2>
+            </div>
+            <span class="counter" id="localVisitorCounter">0</span>
+          </div>
+          <div class="visitor-list" id="localVisitorList"></div>
+        </article>
+      </section>
+
+      <section class="grid mode-panel web-panel" data-panel="liveShare">
+        <article class="card setup-card">
+          <div class="card-head">
+            <div>
+              <p class="eyebrow">Live Share</p>
+              <h2>Share through relay</h2>
+            </div>
+            <span class="counter" id="liveSelectedFileCounter">0</span>
+          </div>
+          <div class="actions three">
+            <button class="primary" id="chooseLiveFilesButton" type="button">Choose files</button>
+            <button class="ghost" id="clearLiveFilesButton" type="button">Clear</button>
+            <button class="primary alt" id="startLiveButton" type="button">Create link</button>
+          </div>
+          <button class="danger full" id="stopLiveButton" type="button">Stop live share</button>
+          <p class="hint" id="liveRelayStatus">Global link off.</p>
+          <div class="selected-list compact" id="liveSelectedFileList">
+            <p class="empty">Choose files only for Live Share.</p>
+          </div>
+        </article>
+
+        <article class="card qr-card web-link-card">
+          <div class="card-head">
+            <div>
+              <p class="eyebrow">Global Link</p>
+              <h2>Remote browser access</h2>
+            </div>
+            <button class="ghost" id="refreshLiveButton" type="button">Refresh</button>
+          </div>
+          <div class="qr-wrap small" id="liveQrWrap" aria-live="polite"></div>
+          <p class="payload" id="livePayloadText"></p>
+          <p class="payload secondary" id="liveFullUrlText"></p>
+          <div class="card-head visitor-head">
+            <div>
+              <p class="eyebrow">Approvals</p>
+              <h2>Pending visitors</h2>
+            </div>
+            <span class="counter" id="liveApprovalCounter">0</span>
+          </div>
+          <div class="visitor-list" id="liveApprovalList"></div>
+          <div class="card-head visitor-head">
+            <div>
+              <p class="eyebrow">Visitors</p>
+              <h2>Live sessions</h2>
+            </div>
+            <span class="counter" id="liveVisitorCounter">0</span>
+          </div>
+          <div class="visitor-list" id="liveVisitorList"></div>
+        </article>
+      </section>
+
+      <section class="card transfers-card" data-transfer-panel="receive">
+        <div class="card-head">
+          <div>
+            <p class="eyebrow">Transfers</p>
+            <h2>Received files</h2>
+          </div>
+          <span class="counter" id="receiveTransferCounter">0</span>
+        </div>
+        <div class="transfer-list" id="receiveTransferList">
+          <p class="empty">Waiting for the phone to connect.</p>
+        </div>
+      </section>
+
+      <section class="card transfers-card" data-transfer-panel="send">
+        <div class="card-head">
+          <div>
+            <p class="eyebrow">Transfers</p>
+            <h2>Sent files</h2>
+          </div>
+          <span class="counter" id="sendTransferCounter">0</span>
+        </div>
+        <div class="transfer-list" id="sendTransferList">
+          <p class="empty">Choose files and let the phone scan.</p>
+        </div>
+      </section>
+    </main>
+    <script src="/qr.js"></script>
+    <script src="/app.js"></script>
+  </body>
+</html>
