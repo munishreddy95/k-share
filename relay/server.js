@@ -35,7 +35,7 @@ function safeSlug(value) {
     .replace(/-+/g, '-')
     .replace(/^-|-$/g, '')
     .slice(0, 48);
-  return slug || `flux-${crypto.randomBytes(4).toString('hex')}`;
+  return slug || `kshare-${crypto.randomBytes(4).toString('hex')}`;
 }
 
 function appendQuery(url, key, value) {
@@ -602,12 +602,12 @@ function createRelayServer(options = {}) {
 
     const target = resolveTarget(req, sessions, config);
     if (!target) {
-      sendText(res, 404, 'This Flux File Share link is offline or expired.');
+      sendText(res, 404, 'This K-Share link is offline or expired.');
       return;
     }
 
     if (target.session.token && target.providedToken !== target.session.token) {
-      sendText(res, 401, 'This Flux File Share link needs the private access token.');
+      sendText(res, 401, 'This K-Share link needs the private access token.');
       return;
     }
 
@@ -739,8 +739,8 @@ if (require.main === module) {
   const relay = createRelayServer();
   relay.listen(() => {
     const publicAddress = relay.publicServer.address();
-    console.log(`Flux relay HTTP and WebSocket listening on ${publicAddress.address}:${publicAddress.port}`);
-    console.log(`Flux relay phone agent path is ${relay.config.agentPath}`);
+    console.log(`K-Share relay HTTP and WebSocket listening on ${publicAddress.address}:${publicAddress.port}`);
+    console.log(`K-Share relay phone agent path is ${relay.config.agentPath}`);
   });
 }
 

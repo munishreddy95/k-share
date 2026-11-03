@@ -426,7 +426,7 @@ function renderHome(config) {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Flux Tiny URL</title>
+  <title>K-Share Short Links</title>
   <style>
     :root { color-scheme: dark; --bg: #061014; --text: #f5fbfb; --muted: #9fb8bb; --accent: #27e0d0; }
     * { box-sizing: border-box; }
@@ -440,9 +440,9 @@ function renderHome(config) {
 </head>
 <body>
   <main>
-    <div class="eyebrow">Flux Tiny URL</div>
+    <div class="eyebrow">K-Share Short Links</div>
     <h1>Relay-only short links.</h1>
-    <p>This service creates tiny URLs only through the Flux relay API. Public visitors can use existing short links, but cannot create new ones here.</p>
+    <p>This service creates tiny URLs only through the K-Share relay API. Public visitors can use existing short links, but cannot create new ones here.</p>
     <p>Health check: <code>/healthz</code></p>
   </main>
 </body>
@@ -453,7 +453,7 @@ function renderHome(config) {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Flux Tiny URL</title>
+  <title>K-Share Short Links</title>
   <style>
     :root { color-scheme: dark; --bg: #061014; --card: #0d1d24; --line: #1e4752; --text: #f5fbfb; --muted: #9fb8bb; --accent: #27e0d0; --warn: #ffb454; }
     * { box-sizing: border-box; }
@@ -477,9 +477,9 @@ function renderHome(config) {
 </head>
 <body>
   <main>
-    <div class="eyebrow">Flux Tiny URL</div>
+    <div class="eyebrow">K-Share Short Links</div>
     <h1>Short links for big shares.</h1>
-    <p>Create a tiny URL that redirects to the actual Flux global share link.</p>
+    <p>Create a tiny URL that redirects to the actual K-Share global share link.</p>
     ${config.createToken ? '<p class="note">Creation is protected. Paste your create token below; it is saved only in this browser.</p>' : '<p class="note">Public creation is disabled unless ALLOW_PUBLIC_CREATE=true is set.</p>'}
     <form id="form">
       <label for="url">Actual URL</label>

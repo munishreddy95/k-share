@@ -1,163 +1,103 @@
-# Flux File Share
+# K-Share
 
-Flux File Share is an Android app that lets a user discover files on their phone and expose only the files they choose over the local network. Other devices on the same network can open the phone's `http://ip:port/` address in a browser, view the shared file list, watch video files inline, or download files.
+K-Share shares the files you select between Android phones, computers, and browsers.
+Use Nearby on your local network, open selected files through Local Web, or create
+a Live Share link through a relay for remote visitors.
 
-The app can also create an optional global Web Share link through a deployed Flux relay. The phone keeps the local web server private, opens an outbound relay connection, and people with the private global link can reach the selected shared files from outside the local network.
+The repository includes an Android app, an Electron desktop companion, a standalone
+browser extension, the sharing relay, and an optional short-link service.
 
-The repository also includes a desktop companion receiver in `desktop/`. The desktop app shows a QR code, the Android app scans it from Nearby Share Sender mode, and selected phone files are copied directly to `Downloads/Flux File Share` on the desktop. This avoids requiring a webcam on desktops or laptops.
+## User documentation
 
-## Features
+- [Getting started](docs/users/GETTING_STARTED.md): choose a client and run it from source.
+- [User guide](docs/users/USER_GUIDE.md): Nearby transfers, local links, live links, approvals, and stopping sharing.
+- [Troubleshooting](docs/users/TROUBLESHOOTING.md): permissions, QR pairing, network access, playback, and reconnects.
+- [Privacy and access](docs/users/PRIVACY.md): what is shared and how to control visitors.
+- [Documentation home](docs/README.md): all user and operator guides.
 
-- Automatic video and audio discovery after Android media permission is granted, plus a refresh button for rescanning on demand. Discovered files are not shared automatically.
-- Document folder picker that scans user-approved folders for common documents. Granted folders are rescanned on refresh. Scanned documents are discovered, not shared automatically.
-- Persisted read permissions for selected document URIs where providers allow it.
-- Foreground service keeps the local HTTP server alive while sharing.
-- Browser web UI served directly from the phone with tabs for videos, audio, documents, and all files.
-- Browser video/audio player opens in-page and minimizes to a floating pop-up player without stopping playback.
-- Native dark UI with icon controls, tooltips, and a persisted app text-size setting.
-- Download route for every shared file.
-- Watch/listen route for browser-playable videos and audio with HTTP byte-range support for seeking.
-- Stream URL route for opening formats like MKV in VLC or another native network player.
-- LAN Web Share has no external runtime server dependency.
-- Optional Global Web Share relay for sharing selected phone files through a public domain or wildcard subdomain.
+## Choose how to share
 
-## Build
+| Mode | What it does | What you need |
+| --- | --- | --- |
+| Nearby | Copies selected files between devices using QR pairing | Devices on the same local network; Android scans the QR |
+| Local Web | Lets a browser browse, play supported media, or download selected files | The sharing device and browser on the same reachable local network |
+| Live Share | Lets remote visitors access selected files through a share link | Internet access, a configured relay, and approval where requested |
+| Browser extension | Shares files selected in the browser without the desktop app | The browser running and access to the configured relay |
 
-```bash
+File discovery does not automatically share every discovered file. Local and Live
+sharing have separate file selections. Share only what you intend visitors to access.
+
+## Build the Android app
+
+Requirements: JDK 17, Android SDK platform 36 and the associated Android build tools.
+The app targets Android 8.0/API 26 or newer. From the repository folder:
+
+```sh
 ./gradlew assembleDebug
 ```
 
-The debug APK is generated at:
+On Windows, use `gradlew.bat assembleDebug`. With a test device connected through
+Android Debug Bridge:
 
-```text
-app/build/outputs/apk/debug/app-debug.apk
-```
-
-For a build that can create global Web Share links, point the Android app at a deployed relay:
-
-```bash
-./gradlew assembleRelease \
-  -PFLUX_RELAY_HOST=share.example.com \
-  -PFLUX_RELAY_PORT=443 \
-  -PFLUX_RELAY_PUBLIC_BASE=https://{slug}.share.example.com \
-  -PFLUX_RELAY_TLS=true \
-  -PFLUX_RELAY_AGENT_PATH=/agent
-```
-
-Use `-PFLUX_RELAY_TLS=false` only for local development against a non-TLS relay.
-
-## Install On A Connected Android Device
-
-```bash
+```sh
 adb install -r app/build/outputs/apk/debug/app-debug.apk
 ```
 
-## Use
+Open **K-Share** on the phone and follow [the User guide](docs/users/USER_GUIDE.md).
+Release APKs need your own private signing configuration in ignored local files.
+See [Contributing](CONTRIBUTING.md) for development and validation.
 
-1. Open Flux File Share on the phone.
-2. Grant media permission when prompted, or tap `Refresh files` / `Add documents folder`.
-3. Use the `Share` filter to choose files to expose, or the `Shared` filter to remove exposed files.
-4. Tap `Start`.
-5. Open the shown address, for example `http://192.168.1.34:8080/`, from another device on the same local network.
+## Run the desktop app
 
-Some mobile networks, guest Wi-Fi networks, VPNs, and hotspot configurations block peer-to-peer local traffic. If the page does not open from another device, confirm both devices are on the same Wi-Fi network and that client isolation is disabled.
+Use Node.js 22.12 or newer. From the repository folder:
 
-## Global Web Share Relay
-
-The relay lives in `relay/` and uses no third-party npm packages.
-
-```bash
-cd relay
-npm test
-PUBLIC_PORT=4444 AGENT_PATH=/agent PUBLIC_BASE=https://{slug}.share.example.com BASE_DOMAIN=share.example.com npm start
+```sh
+npm --prefix desktop ci
+npm --prefix desktop start
 ```
 
-Production deployment should put HTTPS in front of the relay HTTP port. Browser traffic and Android relay traffic both go through Nginx on `443`; Android connects to the `/agent` WebSocket path. Configure DNS as either a wildcard subdomain such as `*.share.example.com` or use path mode such as `https://share.example.com/<session>/`.
+The desktop offers **Receive**, **Send**, **Local Web**, and **Live Share**. New
+Nearby transfers are saved to `Downloads/K-Share` by default. Files received under
+the old name remain in their existing folder; they are not moved or deleted.
 
-Global links include a private token. Anyone with that link can access the currently shared files until the user stops the global link, so only explicitly selected files are exposed.
+For the browser-backed companion, run `npm --prefix desktop run start:web`.
+Its native file picker is unavailable; use Electron to select desktop files.
+See [desktop setup](desktop/README.md) for the workflows.
 
-### Docker Relay And Tiny-URL Deployment
+## Load the browser extension
 
-The root Docker Compose stack runs both the relay and tiny-url service on a private Docker network. Nginx still proxies public traffic from the VPS to `127.0.0.1`; the relay calls tiny-url internally at `http://flux-tiny-url:4100/api/links`.
+Open your browser’s extensions page, enable **Developer mode**, select
+**Load unpacked**, and choose the `browser-extension` folder in this repository.
+See [extension setup](browser-extension/README.md) for relay settings and limitations.
+The source supports unpacked loading; this repository does not establish a store listing.
 
-```bash
+## Host the relay and short-link service
+
+Live Share uses the relay in `relay/`. Local/Nearby sharing does not need a relay.
+The short-link service in `tiny-url/` is optional. For a self-hosted stack:
+
+```sh
 cp relay/.env.example relay/.env
 cp tiny-url/.env.example tiny-url/.env
-```
-
-Edit `relay/.env`:
-
-```text
-PUBLIC_BASE=https://{slug}.share.fv.munishkumarm.com
-BASE_DOMAIN=share.fv.munishkumarm.com
-AGENT_PATH=/agent
-TINY_URL_API_URL=http://flux-tiny-url:4100/api/links
-TINY_URL_CREATE_TOKEN=<same token as tiny-url CREATE_TOKEN>
-```
-
-Edit `tiny-url/.env`:
-
-```text
-PUBLIC_BASE=https://tiny.munishkumarm.com
-CREATE_TOKEN=<same token as relay TINY_URL_CREATE_TOKEN>
-ALLOW_PUBLIC_CREATE=false
-ENABLE_CREATE_UI=false
-CREATE_ALLOWED_IPS=
-TRUST_PROXY=true
-```
-
-Then deploy:
-
-```bash
+# Replace sample domains and token values in both files before deployment.
 docker compose up -d --build
 ```
 
-If the relay is not running in Docker and is started directly on the VPS, use `http://127.0.0.1:4100/api/links` for `TINY_URL_API_URL` instead.
+Follow [Self-hosting](docs/SELF_HOSTING.md) for HTTPS, proxying, matching service
+tokens, Android build settings, and extension relay permissions. Existing config
+and protocol identifiers remain compatible; see [Branding compatibility](docs/BRANDING.md).
+The repository contains no production credentials. Keep environment files and
+signing keys out of Git.
 
-The default `docker-compose.yml` maps:
+## Verification and contributions
 
-```text
-127.0.0.1:4444 -> relay HTTP and /agent WebSocket for Nginx proxying
-127.0.0.1:4100 -> tiny-url HTTP for Nginx short-link redirects
-```
+Run `npm test` from the repository root with Node.js 22.12 or newer. The Node test
+suites do not need the Electron download. See [Contributing](CONTRIBUTING.md) for
+Android checks and [Release checks](docs/RELEASE_CHECKS.md) for current validation
+and limitations. Report ordinary bugs through this repository’s GitHub issues;
+report vulnerabilities using [SECURITY.md](SECURITY.md).
 
-Your existing Nginx server block needs WebSocket upgrade headers:
+## License
 
-```nginx
-location / {
-    proxy_pass http://127.0.0.1:4444;
-    proxy_http_version 1.1;
-    proxy_set_header Host $host;
-    proxy_set_header Upgrade $http_upgrade;
-    proxy_set_header Connection $connection_upgrade;
-    proxy_set_header X-Forwarded-Proto https;
-    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-    proxy_buffering off;
-}
-```
-
-If your Nginx config does not already define `$connection_upgrade`, add this in the `http` block:
-
-```nginx
-map $http_upgrade $connection_upgrade {
-    default upgrade;
-    '' close;
-}
-```
-
-## Desktop Companion
-
-```bash
-cd desktop
-npm run start:web
-```
-
-For the Electron app shell:
-
-```bash
-cd desktop
-npm install
-npm start
-```
-
-Desktop details are in `desktop/README.md`.
+Original K-Share contributions are available under the [MIT License](LICENSE).
+Third-party components keep their own licenses; see [Third-party notices](THIRD_PARTY_NOTICES.md).

@@ -86,13 +86,19 @@ async function run() {
   const htmlResponse = await fetch(url);
   assert.strictEqual(htmlResponse.status, 200);
   const html = await htmlResponse.text();
-  assert.ok(html.includes("Flux File Share Desktop"));
+  assert.ok(html.includes("K-Share Desktop"));
   assert.ok(html.includes("Transfer workspace"));
   assert.ok(html.includes("Phone sends to desktop"));
   assert.ok(html.includes("Local Web"));
   assert.ok(html.includes("Live Share"));
   assert.ok(!html.includes("mode-panel active"));
   assert.ok(!html.includes("mode-tab active"));
+
+  const iconResponse = await fetch(`${url}/icon.png`);
+  assert.strictEqual(iconResponse.status, 200);
+  assert.strictEqual(iconResponse.headers.get("content-type"), "image/png");
+  const icon = Buffer.from(await iconResponse.arrayBuffer());
+  assert.deepStrictEqual([...icon.subarray(0, 8)], [137, 80, 78, 71, 13, 10, 26, 10]);
 
   const sharedFile = path.join(saveDir, "browser-video.mp4");
   await fsp.writeFile(sharedFile, Buffer.from("desktop local web share"));
@@ -146,7 +152,7 @@ async function run() {
       email: "visitor@example.com",
       location: "Test lab",
       device: "Node browser",
-      userAgent: "Flux desktop test"
+      userAgent: "K-Share desktop test"
     })
   });
   assert.strictEqual(accessResponse.status, 200);

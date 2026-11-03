@@ -100,7 +100,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public final class MainActivity extends Activity {
-    private static final String TAG = "FluxFileShare";
+    private static final String TAG = "KShare";
     static final String ACTION_OPEN_WEB_SHARE = "com.fluxfileshare.OPEN_WEB_SHARE";
     static final String ACTION_CONFIRM_STOP_LOCAL_SHARE = "com.fluxfileshare.CONFIRM_STOP_LOCAL_SHARE";
     static final String ACTION_CONFIRM_STOP_LIVE_SHARE = "com.fluxfileshare.CONFIRM_STOP_LIVE_SHARE";
@@ -212,7 +212,7 @@ public final class MainActivity extends Activity {
     private static final int NEARBY_MESSAGE_CANCEL = 2;
     private static final int NEARBY_MESSAGE_QUEUE = 3;
     private static final int NEARBY_MESSAGE_FILE_CANCEL = 4;
-    private static final String PUBLIC_RECEIVE_DIR = "Flux File Share";
+    private static final String PUBLIC_RECEIVE_DIR = "K-Share";
     private static final float MIN_AUTO_TEXT_SCALE = 0.82f;
     private static final float MAX_AUTO_TEXT_SCALE = 1.0f;
     private static final float MIN_AUTO_UI_SCALE = 0.78f;
@@ -898,7 +898,7 @@ public final class MainActivity extends Activity {
         title.setIncludeFontPadding(false);
         heroCard.addView(title, fullWidthWithMargins(0, dp(2), 0, 0));
 
-        TextView subtitle = text("Local network • QR paired • No cloud", 10, muted, true);
+        TextView subtitle = text("Nearby • Local Web • Live Share", 10, muted, true);
         subtitle.setGravity(Gravity.CENTER);
         subtitle.setPadding(0, dp(4), 0, 0);
         heroCard.addView(subtitle, fullWidthWithMargins(0, 0, 0, 0));

@@ -30,7 +30,7 @@ public final class NearbyTransferService extends Service {
     static final String COMMAND_RESUME = "resume";
     static final String COMMAND_CANCEL = "cancel";
 
-    private static final String TAG = "FluxNearbyService";
+    private static final String TAG = "KShareNearbyService";
     private static final String CHANNEL_ID = "nearby_transfer";
     private static final int NOTIFICATION_ID = 1002;
 

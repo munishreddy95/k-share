@@ -1,6 +1,6 @@
-# Flux Tiny URL
+# K-Share Short Links
 
-Small standalone Node.js URL shortener for Flux File Share public links.
+Small standalone Node.js URL shortener for K-Share public links.
 
 It creates tiny URLs like:
 
@@ -8,7 +8,7 @@ It creates tiny URLs like:
 https://tiny.munishkumarm.com/a8kp2rq
 ```
 
-and redirects them to the actual Flux global share URL:
+and redirects them to the actual K-Share global share URL:
 
 ```text
 https://abc123.share.fv.munishkumarm.com/
@@ -28,9 +28,12 @@ https://abc123.share.fv.munishkumarm.com/
 
 ## Local Run
 
+Use Node.js 22.12 or newer for the environment-file command below.
+
 ```bash
 cp .env.example .env
-npm start
+# Edit .env before starting; Node does not load it automatically.
+node --env-file=.env server.js
 ```
 
 For local testing without a token, set:

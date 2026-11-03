@@ -1,0 +1,19 @@
+{
+  "name": "k-share",
+  "version": "0.1.0",
+  "private": true,
+  "description": "K-Share Android, desktop, browser extension, and file-sharing services.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/munishreddy95/k-share.git"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "check:branding": "node scripts/check-branding.js",
+    "check:docs": "node scripts/check-docs.js",
+    "test": "npm run check:branding && npm run check:docs && npm --prefix desktop test && npm --prefix relay test && npm --prefix tiny-url test && node browser-extension/test/extension-static.test.js"
+  }
+}

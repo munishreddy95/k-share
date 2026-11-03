@@ -24,7 +24,7 @@ const NEARBY_SESSION_ERROR = "Different Nearby session. Refresh QR and scan agai
 const NEARBY_CHUNK_DONE = -1;
 const NEARBY_CHUNK_CANCELLED = -2;
 const NEARBY_RECEIVER_CANCEL_OFFSET = -1n;
-const PUBLIC_RECEIVE_DIR = "Flux File Share";
+const PUBLIC_RECEIVE_DIR = "K-Share";
 
 let mainWindow = null;
 
@@ -275,7 +275,7 @@ function safePartialName(value) {
 
 function deviceName() {
   const name = os.hostname().replace(/\.local$/i, "").trim();
-  return name || "Flux Desktop";
+  return name || "K-Share Desktop";
 }
 
 function mimeTypeForFile(filePath) {
@@ -773,7 +773,7 @@ form.addEventListener('submit',async event=>{event.preventDefault();button.disab
 :root{color-scheme:dark;--bg:#05080a;--panel:#0e181c;--line:#263c45;--ink:#f6fbf9;--muted:#93aaa8;--teal:#3dc6be;--amber:#ffaa60}
 *{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(circle at 0 0,#16484e,transparent 36%),linear-gradient(135deg,#061014,#05080a);color:var(--ink);font-family:system-ui,-apple-system,sans-serif}.shell{width:min(1040px,100%);margin:auto;padding:20px}.hero{display:flex;justify-content:space-between;gap:14px;align-items:center;margin-bottom:14px}.eyebrow{margin:0 0 6px;color:var(--amber);letter-spacing:.14em;text-transform:uppercase;font-size:11px;font-weight:900}h1{margin:0;font-size:clamp(32px,6vw,64px);line-height:.95;letter-spacing:-.06em}.subtle{color:var(--muted)}.tabs{display:flex;gap:8px;overflow:auto;margin:12px 0}.tab{border:1px solid var(--line);background:#0e181c;color:var(--ink);border-radius:999px;padding:10px 14px;font-weight:900;white-space:nowrap}.tab.active{border-color:var(--teal);color:#bdfbf6;background:#09272c}.search{width:100%;height:46px;border-radius:16px;border:1px solid var(--line);background:#071013;color:var(--ink);padding:0 14px;font:inherit;font-weight:800}.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px;margin-top:14px}.file{border:1px solid var(--line);border-radius:20px;background:#0e181ce8;padding:14px;min-width:0}.badge{display:inline-grid;place-items:center;min-width:48px;height:38px;border-radius:14px;background:#132228;color:#bdfbf6;font-weight:1000}.file h2{font-size:16px;overflow-wrap:anywhere}.meta{color:var(--muted);font-size:13px}.actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}.btn{display:grid;place-items:center;text-decoration:none;min-height:40px;border-radius:14px;font-weight:900}.watch{background:linear-gradient(135deg,var(--teal),#7af7ed);color:#041113}.download{background:#132228;color:#f6fbf9;border:1px solid var(--line)}.empty{padding:24px;border:1px dashed var(--line);border-radius:20px;color:var(--muted);text-align:center}.modal{position:fixed;inset:0;background:#000b;display:none;place-items:center;padding:20px}.modal.open{display:grid}.player{width:min(920px,100%);border:1px solid var(--line);border-radius:24px;background:#071013;padding:14px}.player video,.player audio{width:100%;max-height:72vh}.player-head{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:10px}.close{border:1px solid var(--line);background:#132228;color:#fff;border-radius:12px;min-height:38px;padding:0 12px}@media(max-width:560px){.hero{display:grid}.shell{padding:12px}.grid{grid-template-columns:1fr}.actions{grid-template-columns:1fr}}
 </style></head><body><main class="shell">
-<section class="hero"><div><p class="eyebrow">Flux desktop share</p><h1>${escapeHtml(this.title)}</h1><p class="subtle">${this.files.length} selected file${this.files.length === 1 ? "" : "s"} available.</p></div></section>
+<section class="hero"><div><p class="eyebrow">K-Share desktop share</p><h1>${escapeHtml(this.title)}</h1><p class="subtle">${this.files.length} selected file${this.files.length === 1 ? "" : "s"} available.</p></div></section>
 <input class="search" id="search" placeholder="Search files">
 <nav class="tabs" id="tabs"></nav><section class="grid" id="grid"></section>
 </main><section class="modal" id="modal"><div class="player"><div class="player-head"><strong id="playerTitle"></strong><button class="close" id="close">Close</button></div><div id="playerBody"></div></div></section>
@@ -1167,7 +1167,7 @@ class DesktopLiveShare extends EventEmitter {
       "Connection: Upgrade",
       `Sec-WebSocket-Key: ${key}`,
       "Sec-WebSocket-Version: 13",
-      "User-Agent: FluxFileShare-Desktop",
+      "User-Agent: K-Share-Desktop",
       "\r\n"
     ].join("\r\n"));
     const upgrade = await readWebSocketUpgrade(socket);
@@ -1186,7 +1186,7 @@ class DesktopLiveShare extends EventEmitter {
       slug: this.slug,
       token: this.token,
       deviceName: deviceName(),
-      app: "Flux File Share Desktop"
+      app: "K-Share Desktop"
     });
   }
 
@@ -2239,7 +2239,8 @@ class DesktopHttpApp {
       ".html": "text/html; charset=utf-8",
       ".css": "text/css; charset=utf-8",
       ".js": "text/javascript; charset=utf-8",
-      ".svg": "image/svg+xml"
+      ".svg": "image/svg+xml",
+      ".png": "image/png"
     }[extension] || "application/octet-stream";
     response.writeHead(200, { "Content-Type": type, "Cache-Control": "no-store" });
     response.end(data);
@@ -2304,7 +2305,8 @@ async function createElectronWindow(electron, url) {
     minWidth: 360,
     minHeight: 520,
     backgroundColor: "#071013",
-    title: "Flux File Share Desktop",
+    title: "K-Share Desktop",
+    icon: path.join(__dirname, "..", "public", "icon.png"),
     show: false,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
@@ -2371,8 +2373,9 @@ async function boot() {
   }
 
   if (electron && electron.app) {
-    electron.app.setName("Flux File Share");
+    electron.app.setName("K-Share");
     await electron.app.whenReady();
+    electron.app.dock?.setIcon(path.join(__dirname, "..", "public", "icon.png"));
     electron.ipcMain.removeHandler("flux:choose-files");
     electron.ipcMain.handle("flux:choose-files", async () => {
       const result = await electron.dialog.showOpenDialog(mainWindow || undefined, {
@@ -2399,7 +2402,7 @@ async function boot() {
       ]).finally(() => electron.app.quit());
     });
   } else {
-    console.log(`Flux File Share Desktop is running at ${url}`);
+    console.log(`K-Share Desktop is running at ${url}`);
     console.log("Choose Nearby, Local Web Share, or Live Share in the desktop UI.");
   }
 }

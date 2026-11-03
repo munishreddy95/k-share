@@ -427,7 +427,7 @@ public final class RemoteRelayService extends Service {
                 + "Connection: Upgrade\r\n"
                 + "Sec-WebSocket-Key: " + key + "\r\n"
                 + "Sec-WebSocket-Version: 13\r\n"
-                + "User-Agent: FluxFileShare-Android\r\n"
+                + "User-Agent: K-Share-Android\r\n"
                 + "\r\n";
         relayOutput.write(request.getBytes(StandardCharsets.UTF_8));
         relayOutput.flush();
