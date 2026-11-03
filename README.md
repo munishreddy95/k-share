@@ -73,7 +73,9 @@ The source supports unpacked loading; this repository does not establish a store
 
 ## Host the relay and short-link service
 
-Live Share uses the relay in `relay/`. Local/Nearby sharing does not need a relay.
+Live Share uses the relay in `relay/`. Shipped relay and short-link domains are
+`example.com` placeholders; configure your own service before using Live Share.
+Local/Nearby sharing does not need a relay.
 The short-link service in `tiny-url/` is optional. For a self-hosted stack:
 
 ```sh

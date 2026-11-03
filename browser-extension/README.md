@@ -29,8 +29,9 @@ can hit browser storage limits. Files already downloaded by a visitor cannot be 
 
 ## Relay configuration
 
-The default relay is `wss://share.fv.munishkumarm.com/agent`. Its availability is an
-operator concern; the extension is not a file-hosting service by itself.
+The shipped relay URL, `wss://share.example.com/agent`, is an example placeholder.
+Configure your own working relay before creating a live link. The extension is
+not a file-hosting service by itself.
 
 The popup’s **Advanced relay** field controls the target, but the manifest currently
 permits the configured deployment origin. To use a different relay, update both

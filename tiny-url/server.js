@@ -483,7 +483,7 @@ function renderHome(config) {
     ${config.createToken ? '<p class="note">Creation is protected. Paste your create token below; it is saved only in this browser.</p>' : '<p class="note">Public creation is disabled unless ALLOW_PUBLIC_CREATE=true is set.</p>'}
     <form id="form">
       <label for="url">Actual URL</label>
-      <input id="url" name="url" type="url" placeholder="https://abc.share.fv.munishkumarm.com/" required>
+      <input id="url" name="url" type="url" placeholder="https://abc.share.example.com/" required>
       <div class="grid">
         <div>
           <label for="slug">Custom slug (optional)</label>

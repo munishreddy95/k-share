@@ -4,8 +4,9 @@
 
 The Android app, desktop app, and extension can share through the relay.
 Live sharing needs a reachable relay with HTTPS/WebSocket proxying; local sharing
-and Nearby do not require it. The sample hostnames in this repository describe
-the existing deployment; replace them with domains you control for your own service.
+and Nearby do not require it. The `example.com` hostnames in this repository are
+placeholders, not a hosted K-Share service. Replace them with domains you control
+before using Live Share.
 
 ## Global Web Share Relay
 
@@ -33,8 +34,8 @@ cp tiny-url/.env.example tiny-url/.env
 Edit `relay/.env`:
 
 ```text
-PUBLIC_BASE=https://{slug}.share.fv.munishkumarm.com
-BASE_DOMAIN=share.fv.munishkumarm.com
+PUBLIC_BASE=https://{slug}.share.example.com
+BASE_DOMAIN=share.example.com
 AGENT_PATH=/agent
 TINY_URL_API_URL=http://flux-tiny-url:4100/api/links
 TINY_URL_CREATE_TOKEN=<same token as tiny-url CREATE_TOKEN>
@@ -43,7 +44,7 @@ TINY_URL_CREATE_TOKEN=<same token as tiny-url CREATE_TOKEN>
 Edit `tiny-url/.env`:
 
 ```text
-PUBLIC_BASE=https://tiny.munishkumarm.com
+PUBLIC_BASE=https://tiny.example.com
 CREATE_TOKEN=<same token as relay TINY_URL_CREATE_TOKEN>
 ALLOW_PUBLIC_CREATE=false
 ENABLE_CREATE_UI=false

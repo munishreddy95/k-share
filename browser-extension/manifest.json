@@ -30,9 +30,9 @@
     "tabs"
   ],
   "host_permissions": [
-    "https://share.fv.munishkumarm.com/*"
+    "https://share.example.com/*"
   ],
   "content_security_policy": {
-    "extension_pages": "script-src 'self'; object-src 'self'; connect-src 'self' https://share.fv.munishkumarm.com wss://share.fv.munishkumarm.com"
+    "extension_pages": "script-src 'self'; object-src 'self'; connect-src 'self' https://share.example.com wss://share.example.com"
   }
 }

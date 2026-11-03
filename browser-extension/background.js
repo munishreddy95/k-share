@@ -1,6 +1,6 @@
 importScripts("db.js");
 
-const DEFAULT_RELAY_WS_URL = "wss://share.fv.munishkumarm.com/agent";
+const DEFAULT_RELAY_WS_URL = "wss://share.example.com/agent";
 const CHUNK_BYTES = 512 * 1024;
 const ACCESS_NOTIFICATION_PREFIX = "flux-access-";
 

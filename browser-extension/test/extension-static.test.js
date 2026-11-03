@@ -15,11 +15,11 @@ assert.strictEqual(manifest.background.service_worker, "background.js");
 assert.ok(manifest.permissions.includes("storage"));
 assert.ok(manifest.permissions.includes("clipboardWrite"));
 assert.ok(manifest.permissions.includes("notifications"));
-assert.ok(manifest.host_permissions.includes("https://share.fv.munishkumarm.com/*"));
-assert.ok(manifest.content_security_policy.extension_pages.includes("wss://share.fv.munishkumarm.com"));
+assert.ok(manifest.host_permissions.includes("https://share.example.com/*"));
+assert.ok(manifest.content_security_policy.extension_pages.includes("wss://share.example.com"));
 assert.strictEqual(manifest.icons["128"], "icons/icon-128.png");
 
-assert.ok(background.includes("DEFAULT_RELAY_WS_URL = \"wss://share.fv.munishkumarm.com/agent\""));
+assert.ok(background.includes("DEFAULT_RELAY_WS_URL = \"wss://share.example.com/agent\""));
 assert.ok(background.includes("type: \"register\""));
 assert.ok(background.includes("/access/request"));
 assert.ok(background.includes("/access/session"));

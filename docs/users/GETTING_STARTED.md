@@ -83,8 +83,9 @@ The browser and extension must remain running to serve files. The extension’s
 **Add tab** action creates a text file containing the current tab’s title and URL;
 it does not copy the web page or capture the screen.
 
-The default relay is configured in the extension. For another relay, an operator
-must update its allowed origins as well as its relay field; see
+The shipped relay URL is an example placeholder, not a running service. An operator
+must configure a real relay and update its allowed origins as well as its relay
+field; see
 [Self-hosting](../SELF_HOSTING.md#extension-relay-changes).
 
 ## First session

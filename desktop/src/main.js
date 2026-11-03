@@ -873,7 +873,7 @@ function intEnv(name, fallback) {
 function relayConfigFromEnv() {
   const host = process.env.FLUX_DESKTOP_RELAY_HOST
     || process.env.FLUX_RELAY_HOST
-    || "share.fv.munishkumarm.com";
+    || "share.example.com";
   const tlsEnabled = boolEnv("FLUX_DESKTOP_RELAY_TLS", boolEnv("FLUX_RELAY_TLS", true));
   const port = intEnv("FLUX_DESKTOP_RELAY_PORT", intEnv("FLUX_RELAY_PORT", tlsEnabled ? 443 : 4444));
   const agentPath = process.env.FLUX_DESKTOP_RELAY_AGENT_PATH

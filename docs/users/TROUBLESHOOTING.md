@@ -51,7 +51,8 @@ The browser extension has its own independent file picker and does not need Elec
 
 ## Live Share stays offline or says the relay is not configured
 
-Check internet connectivity and keep the sharing app running. The Android build
+The shipped domains are `example.com` placeholders, not hosted services. Configure
+your own relay first. Check internet connectivity and keep the sharing app running. The Android build
 needs relay host, port, TLS, public-base, and agent-path settings. Desktop uses its
 configured/default relay. Ask your operator to check the relay and HTTPS/WebSocket
 proxy; see [Self-hosting](../SELF_HOSTING.md).

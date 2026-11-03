@@ -38,7 +38,9 @@ when finished. Desktop Local Web does not add Live Share’s visitor-approval st
 **Live Share** has a separate file list. Select files, choose **Create link**, and
 approve intended visitors under **Pending visitors**. Keep the app online and use
 **Stop live share** when done. See [Self-hosting](../docs/SELF_HOSTING.md) for relay
-settings and [Privacy](../docs/users/PRIVACY.md) for access limits.
+settings. The shipped relay hostname is an example placeholder; configure your
+own relay before creating a Live Share link. See
+[Privacy](../docs/users/PRIVACY.md) for access limits.
 
 ## Tests
 

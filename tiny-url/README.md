@@ -1,17 +1,18 @@
 # K-Share Short Links
 
-Small standalone Node.js URL shortener for K-Share public links.
+Small standalone Node.js URL shortener for K-Share public links. All `example.com`
+domains below are placeholders; replace them with your own deployment addresses.
 
 It creates tiny URLs like:
 
 ```text
-https://tiny.munishkumarm.com/a8kp2rq
+https://tiny.example.com/a8kp2rq
 ```
 
 and redirects them to the actual K-Share global share URL:
 
 ```text
-https://abc123.share.fv.munishkumarm.com/
+https://abc123.share.example.com/
 ```
 
 ## Features
@@ -56,7 +57,7 @@ Create a link:
 curl -s -X POST http://127.0.0.1:4100/api/links \
   -H 'content-type: application/json' \
   -H 'authorization: Bearer change-this-long-random-token' \
-  -d '{"url":"https://abc123.share.fv.munishkumarm.com/","slug":"phone-share"}'
+  -d '{"url":"https://abc123.share.example.com/","slug":"phone-share"}'
 ```
 
 Response:
@@ -64,8 +65,8 @@ Response:
 ```json
 {
   "slug": "phone-share",
-  "url": "https://abc123.share.fv.munishkumarm.com/",
-  "shortUrl": "https://tiny.munishkumarm.com/phone-share",
+  "url": "https://abc123.share.example.com/",
+  "shortUrl": "https://tiny.example.com/phone-share",
   "createdAt": "2026-07-25T10:00:00.000Z",
   "expiresAt": null,
   "visits": 0,
@@ -79,7 +80,7 @@ Create an expiring link:
 curl -s -X POST http://127.0.0.1:4100/api/links \
   -H 'content-type: application/json' \
   -H 'authorization: Bearer change-this-long-random-token' \
-  -d '{"url":"https://abc123.share.fv.munishkumarm.com/","ttlSeconds":86400}'
+  -d '{"url":"https://abc123.share.example.com/","ttlSeconds":86400}'
 ```
 
 List links:
@@ -116,7 +117,7 @@ The compose file binds to `127.0.0.1:4100` and attaches the service to the priva
 ```nginx
 server {
     listen 80;
-    server_name tiny.munishkumarm.com;
+    server_name tiny.example.com;
 
     location / {
         proxy_pass http://127.0.0.1:4100;
